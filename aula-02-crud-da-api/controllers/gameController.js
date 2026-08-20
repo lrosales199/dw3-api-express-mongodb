@@ -3,6 +3,9 @@
 // Importando o service
 import gameService from "../services/gameService.js";
 
+// Importando o ObjectID do MongoDB
+import { ObjectId } from "mongodb";
+
 // Função que irá tratar a requisição para LISTAR os jogos
 const getAllGames = async (req, res) => {
   try {
@@ -35,5 +38,45 @@ const createGame = async (req, res) => {
   }
 };
 
+// Função que trata a requesição para EXCLUIR um jogo
+const deleteGame = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Fazendo a validação do ObjectID
+    if (ObjectId.isValid(id)) {
+      await gameService.Delete(id);
+      res.sendStatus(204);
+      // Cod. 204 - No content -> Requisição bem sucedida, porém não há conteúdo para retornar
+    } else {
+      res.status(400).json({ error: "Requisição mal formada, ID inválido." });
+      // Cod. 400 - BAD REQUEST
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+};
+
+// Função que trata a requisição  para ALTERAR um jogo
+const updateGame = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (ObjectId.isValid(id)) {
+      // Coletando os dados que serão alterados
+      const { title, year, platform, price } = req.body;
+
+      await gameService.Update(id, title, year, platform, price);
+      res.status(200).json({ message: "Jogo atualizado com sucesso." });
+    }else{
+      res.status(400).json({ error: "Requisição mal formada, ID inválido." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
 // Exportando as funções
-export default { getAllGames, createGame };
+export default { getAllGames, createGame, deleteGame, updateGame };
