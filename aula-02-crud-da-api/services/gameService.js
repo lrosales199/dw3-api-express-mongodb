@@ -64,6 +64,17 @@ class gameService {
       console.log(error);
     }
   }
+
+  // Método para LISTAR um REGISTRO ÚNICO
+  async getOne(id) {
+    try {
+      const game = await Game.findOne({ _id: id });
+      // findOne -> Método do Mongoose para selecionar um registro único
+      return game;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 // Exportando a classe

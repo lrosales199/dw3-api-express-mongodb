@@ -9,6 +9,9 @@ import gameController from "../controllers/gameController.js";
 // Endpoint (rota) para LISTAR todos os jogos
 gameRoutes.get("/games", gameController.getAllGames);
 
+// Endpoint (rota) para LISTAR um jogo único
+gameRoutes.get("/games/:id", gameController.getOneGame);
+
 // Endpoint (rota) para CADASTRAR um jogo
 gameRoutes.post("/games", gameController.createGame);
 

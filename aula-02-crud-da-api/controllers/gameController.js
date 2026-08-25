@@ -69,7 +69,7 @@ const updateGame = async (req, res) => {
 
       await gameService.Update(id, title, year, platform, price);
       res.status(200).json({ message: "Jogo atualizado com sucesso." });
-    }else{
+    } else {
       res.status(400).json({ error: "Requisição mal formada, ID inválido." });
     }
   } catch (error) {
@@ -78,5 +78,28 @@ const updateGame = async (req, res) => {
   }
 };
 
+// Função que trata a requisição para LISTAR um jogo ÚNICO
+const getOneGame = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (ObjectId.isValid(id)) {
+      const game = await gameService.getOne(id);
+      // Verificando se houve retorno na busca
+      if (!game) {
+        res.status(404).json({ error: "Jogo não encontrado." });
+        // Cod. 404 - NOT FOUND
+      } else {
+        res.status(200).json({ game });
+      }
+      // Se o ID não for válido
+    } else {
+      res.status(400).json({ error: "O ID informado é inválido" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
 // Exportando as funções
-export default { getAllGames, createGame, deleteGame, updateGame };
+export default { getAllGames, createGame, deleteGame, updateGame, getOneGame };
