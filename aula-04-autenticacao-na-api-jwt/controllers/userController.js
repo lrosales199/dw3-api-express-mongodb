@@ -66,4 +66,4 @@ const loginUser = async (req, res) => {
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 };
-export default { createUser, loginUser };
+export default { createUser, loginUser, JWTSecret };
